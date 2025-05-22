@@ -1,0 +1,78 @@
+{% extends 'shop/base.html' %}
+{% block title %}Кіру{% endblock %}
+
+{% block content %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+<style>
+    .auth-card {
+        border-radius: 20px;
+        background: linear-gradient(135deg, #fdfdfd, #f3f3f3);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        animation: fadeIn 0.5s ease-in-out;
+    }
+
+    .input-icon-wrapper {
+        position: relative;
+    }
+
+    .input-icon-wrapper i {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #6c757d;
+        font-size: 1.2rem;
+    }
+
+    .input-icon-wrapper input {
+        padding-left: 2.5rem !important;
+        border-radius: 12px;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+        <div class="card auth-card p-4 border-0">
+            <h3 class="text-center mb-4 fw-bold">🔐 Жүйеге кіру</h3>
+            <form method="post" novalidate>
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+
+                <!-- Username -->
+                <div class="mb-3 input-icon-wrapper">
+                    <i class="bi bi-person-fill"></i>
+                    <input type="text" name="{{ form.username.name }}" class="form-control" id="{{ form.username.id_for_label }}" value="{{ form.username.value }}" placeholder="Қолданушы аты">
+                    {% for error in form.username.errors %}
+                        <div class="text-danger mt-1">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <!-- Password -->
+                <div class="mb-3 input-icon-wrapper">
+                    <i class="bi bi-lock-fill"></i>
+                    <input type="password" name="{{ form.password.name }}" class="form-control" id="{{ form.password.id_for_label }}" placeholder="Құпия сөз">
+                    {% for error in form.password.errors %}
+                        <div class="text-danger mt-1">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <button type="submit" class="btn btn-dark w-100 fw-semibold">
+                    <i class="bi bi-box-arrow-in-right me-1"></i> Кіру
+                </button>
+            </form>
+
+            <div class="text-center mt-3">
+                <p class="text-muted">Жаңа қолданушысыз ба?
+                    <a href="{% url 'register' %}" class="text-decoration-none fw-bold">Тіркелу <i class="bi bi-person-plus"></i></a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends "shop/base.html" %}
+{% load cart_tags %}
+{% block title %}Себет{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Сіздің себетіңіз</h2>
+
+{% if products %}
+    <table class="table table-bordered align-middle shadow-sm">
+        <thead class="table-light">
+            <tr>
+                <th>Тауар</th>
+                <th>Саны</th>
+                <th>Бағасы</th>
+                <th>Әрекет</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+            <tr>
+                <td>{{ product.name }}</td>
+                <td>{{ cart|get_item:product.id }}</td>
+                <td>{{ product.price }} ₸</td>
+                <td>
+                    <a href="{% url 'remove_from_cart' product.id %}" class="btn btn-outline-danger btn-sm">
+                        🗑 Жою
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="text-end">
+        <h4 class="fw-bold">Жалпы: {{ total }} ₸</h4>
+        <a href="#" class="btn btn-success">Тапсырысты рәсімдеу</a>
+    </div>
+
+{% else %}
+    <div class="alert alert-info">Себетіңіз бос.</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,85 @@
+{% extends 'shop/base.html' %}
+{% block title %}Тіркелу{% endblock %}
+
+{% block content %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+<style>
+    .auth-card {
+        border-radius: 20px;
+        background: linear-gradient(135deg, #ffffff, #f9f9f9);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        animation: fadeIn 0.6s ease-in-out;
+    }
+
+    .input-icon-wrapper {
+        position: relative;
+    }
+
+    .input-icon-wrapper i {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #6c757d;
+        font-size: 1.2rem;
+    }
+
+    .input-icon-wrapper input {
+        padding-left: 2.5rem !important;
+        border-radius: 12px;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+        <div class="card auth-card p-4 border-0">
+            <h3 class="text-center mb-4 fw-bold">🚀 Тіркелу формасы</h3>
+            <form method="post" novalidate>
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+
+                <!-- Username -->
+                <div class="mb-3 input-icon-wrapper">
+                    <i class="bi bi-person"></i>
+                    <input type="text" name="{{ form.username.name }}" class="form-control" id="{{ form.username.id_for_label }}" value="{{ form.username.value }}" placeholder="Қолданушы аты">
+                    {% for error in form.username.errors %}
+                        <div class="text-danger mt-1">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <!-- Password1 -->
+                <div class="mb-3 input-icon-wrapper">
+                    <i class="bi bi-lock"></i>
+                    <input type="password" name="{{ form.password1.name }}" class="form-control" id="{{ form.password1.id_for_label }}" placeholder="Құпия сөз">
+                    {% for error in form.password1.errors %}
+                        <div class="text-danger mt-1">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <!-- Password2 -->
+                <div class="mb-3 input-icon-wrapper">
+                    <i class="bi bi-lock-fill"></i>
+                    <input type="password" name="{{ form.password2.name }}" class="form-control" id="{{ form.password2.id_for_label }}" placeholder="Құпия сөзді растау">
+                    {% for error in form.password2.errors %}
+                        <div class="text-danger mt-1">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <button type="submit" class="btn btn-dark w-100 fw-semibold">
+                    <i class="bi bi-person-plus me-1"></i> Тіркелу
+                </button>
+            </form>
+
+            <div class="text-center mt-3">
+                <p class="text-muted">Аккаунтыңыз бар ма? <a href="{% url 'login' %}" class="text-decoration-none fw-bold">Кіру <i class="bi bi-box-arrow-in-right"></i></a></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

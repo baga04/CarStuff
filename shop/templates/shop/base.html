@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}CarStuff{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #4895ef;
+            --dark-color: #1b263b;
+            --light-color: #f8f9fa;
+            --success-color: #4cc9f0;
+            --danger-color: #f72585;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            padding: 0.8rem 0;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary-color) !important;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .navbar-brand:hover {
+            color: var(--secondary-color) !important;
+            transform: translateY(-1px);
+        }
+        
+        .nav-user {
+            font-weight: 500;
+            color: var(--dark-color);
+            margin-right: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .nav-button {
+            margin-left: 0.75rem;
+            border-radius: 50px;
+            padding: 0.5rem 1.25rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-outline-primary {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(67, 97, 238, 0.3);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+        
+        .btn-success {
+            background-color: var(--success-color);
+            border-color: var(--success-color);
+        }
+        
+        .btn-success:hover {
+            background-color: #3aa8d8;
+            border-color: #3aa8d8;
+            transform: translateY(-2px);
+        }
+        
+        .btn-danger {
+            background-color: var(--danger-color);
+            border-color: var(--danger-color);
+        }
+        
+        .btn-danger:hover {
+            background-color: #e5177a;
+            border-color: #e5177a;
+            transform: translateY(-2px);
+        }
+        
+        .btn-outline-secondary {
+            position: relative;
+            overflow: hidden;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-outline-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+        }
+        
+        .badge {
+            font-size: 0.7rem;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .container {
+            flex: 1;
+        }
+        
+        .alert {
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            animation: slideDown 0.5s ease-out;
+        }
+        
+        @keyframes slideDown {
+            from { 
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .cart-icon {
+            transition: all 0.3s ease;
+        }
+        
+        .btn-outline-secondary:hover .cart-icon {
+            transform: rotate(-15deg);
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'product_list' %}">
+            <i class="fas fa-car"></i> CarStuff
+        </a>
+        
+        <div class="d-flex align-items-center">
+            <!-- Себет -->
+            <a href="{% url 'view_cart' %}" class="btn btn-outline-secondary position-relative me-3">
+                <i class="fas fa-shopping-cart cart-icon me-1"></i> Себет
+                {% if cart_total > 0 %}
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    {{ cart_total }}
+                </span>
+                {% endif %}
+            </a>
+
+            {% if user.is_authenticated %}
+                <span class="nav-user">
+                    <i class="fas fa-user-circle"></i> Қош келдіңіз, {{ user.username }}
+                </span>
+                <a href="{% url 'profile' %}" class="btn btn-outline-primary nav-button">
+                    <i class="fas fa-user-cog me-1"></i> Профиль
+                </a>
+                <a href="{% url 'logout' %}" class="btn btn-danger nav-button">
+                    <i class="fas fa-sign-out-alt me-1"></i> Шығу
+                </a>
+            {% else %}
+                <a href="{% url 'login' %}" class="btn btn-outline-primary nav-button">
+                    <i class="fas fa-sign-in-alt me-1"></i> Кіру
+                </a>
+                <a href="{% url 'register' %}" class="btn btn-success nav-button">
+                    <i class="fas fa-user-plus me-1"></i> Тіркелу
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+
+<!-- Сообщения -->
+{% if messages %}
+<div class="container mt-3">
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            <i class="fas 
+                {% if message.tags == 'success' %}fa-check-circle 
+                {% elif message.tags == 'error' %}fa-exclamation-circle 
+                {% else %}fa-info-circle{% endif %} 
+                me-2"></i>
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<main class="container mt-4 mb-5">
+    {% block content %}{% endblock %}
+</main>
+
+<footer>
+    <div class="container footer-content">
+        <div>© 2025 CarStuff.</div>
+        <div class="footer-links">
+            <a href="#"><i class="fas fa-info-circle me-1"></i> Біз туралы</a>
+            <a href="#"><i class="fas fa-envelope me-1"></i> Байланыс</a>
+            <a href="#"><i class="fas fa-file-alt me-1"></i> Құпиялылық саясаты</a>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Анимация при загрузке страницы
+    document.addEventListener('DOMContentLoaded', function() {
+        // Плавное появление элементов
+        const elements = document.querySelectorAll('.navbar, .container');
+        elements.forEach(function(el) {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(10px)';
+            el.style.transition = 'all 0.5s ease-out';
+            setTimeout(() => {
+                el.style.opacity = '1';
+                el.style.transform = 'translateY(0)';
+            }, 100);
+        });
+    });
+</script>
+
+</body>
+</html>
